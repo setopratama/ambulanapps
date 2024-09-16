@@ -25,8 +25,17 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Autentikasi Routes
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [LoginController::class, 'login']);
+Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::get('/home', function () {
+    return redirect()->route('home');
+})->name('home');
+
+Route::post('/login', [LoginController::class, 'login'])->name('login.submit');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
+});
 
 // Registrasi Routes
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');

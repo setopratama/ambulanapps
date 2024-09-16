@@ -65,11 +65,6 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
                         @auth
-                        <li class="nav-item">
-                            <a class="nav-link {{ Request::is('/') ? 'active' : '' }}" href="{{ url('/') }}">
-                                <i class="fas fa-home"></i> Beranda
-                            </a>
-                        </li>
                         @endauth
                     </ul>
 

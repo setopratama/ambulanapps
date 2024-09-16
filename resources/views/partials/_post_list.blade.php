@@ -12,20 +12,50 @@
                 <div class="mt-3">
                     <small class="text-muted">{{ $post->comments->count() }} komentar</small>
                 </div>
-                @foreach($post->comments->take(2) as $comment)
+                @foreach($post->comments->take(3) as $comment)
                     <div class="mt-2">
                         <strong>{{ $comment->user->name }}:</strong> {{ $comment->content }}
                     </div>
                 @endforeach
-                <form action="{{ route('comments.store') }}" method="POST" class="mt-3">
-                    @csrf
-                    <input type="hidden" name="post_id" value="{{ $post->id }}">
-                    <div class="input-group">
-                        <input type="text" name="content" class="form-control" placeholder="Tambahkan komentar...">
-                        <button type="submit" class="btn btn-primary">Kirim</button>
+                @if($post->comments->count() > 3)
+                    <div class="mt-2">
+                        <a href="#" class="show-more-comments" data-post-id="{{ $post->id }}">Tampilkan semua komentar</a>
                     </div>
-                </form>
+                    <div id="all-comments-{{ $post->id }}" style="display: none;">
+                        @foreach($post->comments->skip(3) as $comment)
+                            <div class="mt-2">
+                                <strong>{{ $comment->user->name }}:</strong> {{ $comment->content }}
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+                @auth
+                    <form action="{{ route('comments.store') }}" method="POST" class="mt-3">
+                        @csrf
+                        <input type="hidden" name="post_id" value="{{ $post->id }}">
+                        <div class="input-group">
+                            <input type="text" name="content" class="form-control" placeholder="Tambahkan komentar...">
+                            <button type="submit" class="btn btn-primary">Kirim</button>
+                        </div>
+                    </form>
+                @endauth
             </div>
         </div>
     </div>
 @endforeach
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.show-more-comments').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            var postId = this.getAttribute('data-post-id');
+            var allComments = document.getElementById('all-comments-' + postId);
+            if (allComments) {
+                allComments.style.display = allComments.style.display === 'none' ? 'block' : 'none';
+                this.textContent = allComments.style.display === 'none' ? 'Tampilkan semua komentar' : 'Sembunyikan komentar';
+            }
+        });
+    });
+});
+</script>
