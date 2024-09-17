@@ -65,7 +65,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Contoh:
     // Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
 });
-
 // Grup rute untuk admin dengan middleware auth dan role admin
 Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
@@ -84,9 +83,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::put('/posts/{post}/suspend', [AdminController::class, 'suspendPost'])->name('admin.posts.suspend');
     Route::put('/posts/{post}/activate', [AdminController::class, 'activatePost'])->name('admin.posts.activate');
 
-    // Rute toggle suspension baru
+    // Rute toggle suspension
     Route::post('/user/{user}/toggle-suspension', [AdminController::class, 'toggleUserSuspension'])->name('admin.user.toggle-suspension');
     Route::post('/post/{post}/toggle-suspension', [AdminController::class, 'togglePostSuspension'])->name('admin.post.toggle-suspension');
+    
+    // Rute untuk membuat dan menyimpan postingan baru
+    Route::get('/posts/create', [AdminController::class, 'createPost'])->name('admin.posts.create');
+    Route::post('/posts', [AdminController::class, 'storePost'])->name('admin.posts.store');
     
     // Rute untuk menampilkan detail postingan
     Route::get('/posts/{post}', [AdminController::class, 'showPost'])->name('admin.posts.show');

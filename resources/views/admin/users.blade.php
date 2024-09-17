@@ -61,6 +61,9 @@
                 @endforeach
             </tbody>
         </table>
+        <div class="mt-4 custom-pagination">
+            {{ $users->links() }}
+        </div>
     </div>
 </div>
 

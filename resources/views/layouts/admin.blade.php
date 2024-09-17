@@ -11,6 +11,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     
     @yield('styles')
+    
+    <style>
+    .custom-pagination svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .custom-pagination .flex.justify-between.flex-1 {
+        display: none;
+    }
+
+    .custom-pagination nav {
+        display: flex;
+        justify-content: center;
+    }
+
+    .custom-pagination .relative.inline-flex.items-center.px-4.py-2 {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+    }
+    </style>
 </head>
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">

@@ -92,6 +92,11 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    @if(Auth::user()->role === 'admin')
+                                        <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                            <i class="fas fa-tachometer-alt"></i> Dashboard
+                                        </a>
+                                    @endif
                                     <a class="dropdown-item" href="#">
                                         <i class="fas fa-user"></i> Profil
                                     </a>

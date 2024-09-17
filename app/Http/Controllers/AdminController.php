@@ -24,11 +24,11 @@ class AdminController extends Controller
         return view('admin.users', compact('users'));
     }
 
-    public function posts()
+    public function posts(Request $request)
     {
-        // Logika untuk halaman manajemen post
-        $posts = Post::with('user')->paginate(15);
-        return view('admin.posts', compact('posts'));
+        $limit = $request->input('limit', 10);
+        $posts = Post::with('user')->latest()->paginate($limit);
+        return view('admin.posts', compact('posts', 'limit'));
     }
 
     public function createUser()
@@ -137,5 +137,28 @@ class AdminController extends Controller
         $users = User::all();
         $posts = Post::with('user')->get();
         return view('admin.dashboard', compact('users', 'posts'));
+    }
+    public function createPost()
+    {
+        return view('admin.posts.create');
+    }
+
+    public function storePost(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'start_point' => 'required|json',
+            'end_point' => 'required|json',
+        ]);
+
+        $validated['start_point'] = json_decode($validated['start_point'], true);
+        $validated['end_point'] = json_decode($validated['end_point'], true);
+
+        $post = new Post($validated);
+        $post->user_id = auth()->id();
+        $post->save();
+
+        return redirect()->route('admin.posts')->with('success', 'Postingan berhasil ditambahkan.');
     }
 }
